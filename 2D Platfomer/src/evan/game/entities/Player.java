@@ -13,17 +13,6 @@ public class Player {
 	private double x, y;
 	private int width, height;
 	
-	private double hSpeed = 4;
-	private double currentHSpeed = 0;
-	private double maxHSpeed = 6;
-	
-	private double vHeight = 64;
-	private double vTime = 120;
-	private double initVelocity = 2 * vHeight / vTime;
-	private double currentVSpeed = initVelocity;
-	private double maxVSpeed = 8;
-	private double gravity = -2 * vHeight / (vTime * vTime);
-	
 	// Old
 	private double jumpSpeed = 5;
 	private double currentJumpSpeed = jumpSpeed;
@@ -49,7 +38,7 @@ public class Player {
 		}
 		
 		if (jumping) {
-			y += currentVSpeed;
+			y -= currentJumpSpeed;
 			currentJumpSpeed -= 0.1;
 			
 			if (currentJumpSpeed <= 0) {
@@ -59,7 +48,7 @@ public class Player {
 			}
 		}
 		
-		/*if (falling) {
+		if (falling) {
 			y += currentFallSpeed;
 			
 			if (currentFallSpeed < maxFallSpeed) {
@@ -67,7 +56,7 @@ public class Player {
 			}
 		} else if (!falling) {
 			currentFallSpeed = 0.1;
-		}*/
+		}
 		
 	}
 	

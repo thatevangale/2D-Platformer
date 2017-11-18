@@ -1,0 +1,27 @@
+import java.awt.Graphics;
+
+public class GameStateManager {
+	
+	private Stack<GameState> states;
+
+	public GameStateManager() {
+		
+	}
+	
+	public void update() {
+		
+	}
+	
+	public void render(Graphics g) {
+		
+	}
+	
+	public void keyPressed(int k) {
+		
+	}
+	
+	public void keyReleased(int k) {
+		
+	}
+	
+}

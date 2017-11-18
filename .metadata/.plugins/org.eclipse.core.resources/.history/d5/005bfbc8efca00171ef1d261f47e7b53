@@ -1,0 +1,15 @@
+import javax.swing.JFrame;
+
+/*
+ * Author: Evan Gale
+ * Date:   17/11/2017
+*/
+
+public class GameMain {
+
+	public static void main(String[] args) {
+		JFrame frame = new JFrame("Platformer");
+
+	}
+
+}

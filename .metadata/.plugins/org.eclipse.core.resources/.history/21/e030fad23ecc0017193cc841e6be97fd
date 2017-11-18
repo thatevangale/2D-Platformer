@@ -1,0 +1,5 @@
+package evan.game.gamestate;
+
+public class Level1State {
+
+}

@@ -12,8 +12,8 @@ public class GameStateManager {
 		states.push(new MenuState(this));
 	}
 	
-	public void update() {
-		states.peek().update();
+	public void update(float delta) {
+		states.peek().update(delta);
 	}
 	
 	public void render(Graphics g) {

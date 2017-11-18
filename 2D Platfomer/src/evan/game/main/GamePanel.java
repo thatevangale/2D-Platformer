@@ -22,7 +22,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	private int FPS = 60;
 	private long targetTime = 1000 / FPS;
 	
-	private GameStateManager gsm;
+	protected GameStateManager gsm;
+	protected Timer timer;
 	
 	public GamePanel() {
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -30,10 +31,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		addKeyListener(this);
 		setFocusable(true);
 		
+		timer = new Timer();
+		gsm = new GameStateManager();
+		
 		start();
 	}
 	
 	private void start() {
+		timer.init();
 		isRunning = true;
 		thread = new Thread(this);
 		thread.start();
@@ -41,32 +46,37 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	
 	public void run() {
 		long start, elapsed, wait;
-		
-		gsm = new GameStateManager();
+		float delta;
 		
 		while (isRunning) {
-			start = System.nanoTime();
+			//start = System.nanoTime();
 			
-			update();
+			/* Get delta time */
+			start = (long) (timer.getTime() * 1000L);
+            delta = timer.getDelta();
+			
+			update(delta);
 			repaint();
 			
-			elapsed = System.nanoTime() - start;
+			elapsed = (long) (timer.getTime() * 1000L);
+			
+			/*elapsed = System.nanoTime() - start;
 			wait = targetTime - elapsed / 1000000;
 			
 			if (wait <= 0) {
 				wait = 5;
-			}
+			}*/
 			
 			try {
-				Thread.sleep(wait);
+				Thread.sleep(start + targetTime - elapsed);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
 	
-	public void update() {
-		gsm.update();
+	public void update(float delta) {
+		gsm.update(delta);
 	}
 	
 	public void paintComponent(Graphics g) {

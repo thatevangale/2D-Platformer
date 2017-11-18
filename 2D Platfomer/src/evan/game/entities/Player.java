@@ -13,23 +13,23 @@ public class Player {
 	private double x, y;
 	private int width, height;
 	
-	private double hSpeed = 4;
+	private double hSpeed = 50;
 	private double currentHSpeed = 0;
 	private double maxHSpeed = 6;
 	
 	private double vHeight = 64;
-	private double vTime = 120;
+	private double vTime = 2;
 	private double initVelocity = 2 * vHeight / vTime;
 	private double currentVSpeed = initVelocity;
 	private double maxVSpeed = 8;
-	private double gravity = -2 * vHeight / (vTime * vTime);
+	private double gravity = 2 * vHeight / (vTime * vTime);
 	
 	// Old
-	private double jumpSpeed = 5;
+	/*private double jumpSpeed = 5;
 	private double currentJumpSpeed = jumpSpeed;
 	
 	private double maxFallSpeed = 5;
-	private double currentFallSpeed = 0.1;
+	private double currentFallSpeed = 0.1;*/
 
 	public Player(int width, int height) {
 		x = GamePanel.WIDTH / 2;
@@ -38,25 +38,28 @@ public class Player {
 		this.height = height;
 	}
 	
-	public void update() {
+	public void update(float delta) {
+		
+		System.out.println(delta);
 		
 		if (right) {
-			x += 4;
+			x += hSpeed * delta;
 		}
 		
 		if (left) {
-			x -= 4;
+			x -= hSpeed * delta;
 		}
 		
 		if (jumping) {
-			y += currentVSpeed;
-			currentJumpSpeed -= 0.1;
+			y += currentVSpeed * delta;
+			currentVSpeed += gravity * delta;
+			//currentJumpSpeed -= 0.1;
 			
-			if (currentJumpSpeed <= 0) {
+			/*if (currentJumpSpeed <= 0) {
 				currentJumpSpeed = jumpSpeed;
 				jumping = false;
 				falling = true;
-			}
+			}*/
 		}
 		
 		/*if (falling) {
@@ -88,6 +91,7 @@ public class Player {
 		
 		if (k == KeyEvent.VK_UP) {
 			jumping = true;
+			currentVSpeed = -initVelocity;
 		}
 		
 	}

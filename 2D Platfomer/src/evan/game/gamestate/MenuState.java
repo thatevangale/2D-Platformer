@@ -22,7 +22,7 @@ public class MenuState extends GameState {
 	}
 
 	@Override
-	public void update() {
+	public void update(float delta) {
 		
 	}
 

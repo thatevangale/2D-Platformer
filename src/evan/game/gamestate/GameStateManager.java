@@ -12,7 +12,7 @@ public class GameStateManager {
 		states.push(new MenuState(this));
 	}
 	
-	public void update(float delta) {
+	public void update(double delta) {
 		states.peek().update(delta);
 	}
 	

@@ -17,13 +17,25 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	public static final int HEIGHT = 480;
 	
 	private Thread thread;
-	private boolean isRunning = false;
+	private volatile boolean isRunning = false;
 	
-	private int FPS = 60;
-	private long targetTime = 1000 / FPS;
+	public static final int TARGET_FPS = 75;
+    public static final int TARGET_UPS = 30;
+    
+    public static final float WORLD_WIDTH = 2.0f;
+    public static final float WORLD_HEIGHT = 2.0f;
+    
+    public static final float SCREEN_WIDTH = WIDTH - 1.0f;
+    public static final float SCREEN_HEIGHT = HEIGHT - 1.0f;
+    
+    public static final float SX = SCREEN_WIDTH / WORLD_WIDTH;
+    public static final float SY = SCREEN_HEIGHT / WORLD_HEIGHT;
+    
+    public static final float TX = SCREEN_WIDTH / 2.0f;
+    public static final float TY = SCREEN_HEIGHT / 2.0f;
 	
 	protected GameStateManager gsm;
-	protected Timer timer;
+	protected GameTimer timer;
 	
 	public GamePanel() {
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -31,7 +43,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		addKeyListener(this);
 		setFocusable(true);
 		
-		timer = new Timer();
+		timer = new GameTimer();
 		gsm = new GameStateManager();
 		
 		start();
@@ -45,44 +57,53 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	}
 	
 	public void run() {
-		long start, elapsed, wait;
-		float delta;
+		double delta, alpha, acc = 0.0, interval = 1.0 / TARGET_UPS;
 		
 		while (isRunning) {
-			//start = System.nanoTime();
-			
-			/* Get delta time */
-			start = (long) (timer.getTime() * 1000L);
+			// Get delta time
             delta = timer.getDelta();
+            acc += delta;
+            
+            // Handle input
+            input();
 			
-			update(delta);
-			repaint();
+            // Update game and timer UPS if enough time has passed
+            while (acc >= interval) {
+            	update(interval);
+            	timer.updateUPS();
+            	acc -= interval;
+            }
 			
-			elapsed = (long) (timer.getTime() * 1000L);
-			
-			/*elapsed = System.nanoTime() - start;
-			wait = targetTime - elapsed / 1000000;
-			
-			if (wait <= 0) {
-				wait = 5;
-			}*/
-			
-			try {
-				Thread.sleep(start + targetTime - elapsed);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+            // Calculate alpha value for interpolation
+            alpha = acc / interval;
+            
+            // Render game and update timer FPS
+            render(alpha);
+            timer.updateFPS();
+            
+            // Update timer
+            timer.update();
 		}
 	}
 	
-	public void update(float delta) {
+	private void input() {}
+	
+	
+	public void update(double delta) {
 		gsm.update(delta);
 	}
 	
+	private void render(double alpha) {
+		repaint();
+	}
+
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
 		g.clearRect(0, 0, WIDTH, HEIGHT);
+		g.drawString("FPS: " + timer.getFPS(), 20, 20);
+		
+		// Matrix3x3f viewport = 
 		
 		gsm.render(g);
 	}
@@ -98,9 +119,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void keyTyped(KeyEvent e) {}
 	
 }

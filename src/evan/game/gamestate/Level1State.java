@@ -18,7 +18,7 @@ public class Level1State extends GameState {
 	}
 
 	@Override
-	public void update(float delta) {
+	public void update(double delta) {
 		player.update(delta);
 	}
 

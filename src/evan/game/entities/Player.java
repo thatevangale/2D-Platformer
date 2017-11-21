@@ -13,16 +13,16 @@ public class Player {
 	private double x, y;
 	private int width, height;
 	
-	private double hSpeed = 50;
+	private double hSpeed = 100;
 	private double currentHSpeed = 0;
 	private double maxHSpeed = 6;
 	
 	private double vHeight = 64;
 	private double vTime = 2;
-	private double initVelocity = 2 * vHeight / vTime;
+	private double initVelocity = 200; //2 * vHeight / vTime;
 	private double currentVSpeed = initVelocity;
 	private double maxVSpeed = 8;
-	private double gravity = 2 * vHeight / (vTime * vTime);
+	private double gravity = 200; //2 * vHeight / (vTime * vTime);
 	
 	// Old
 	/*private double jumpSpeed = 5;
@@ -31,16 +31,23 @@ public class Player {
 	private double maxFallSpeed = 5;
 	private double currentFallSpeed = 0.1;*/
 
+	/*public Player(int width, int height) {
+		x = GamePanel.WIDTH / 2;
+		y = GamePanel.HEIGHT / 2;
+		this.width = width;
+		this.height = height;
+	}*/
+	
 	public Player(int width, int height) {
+		//super(x, y, speed, 20, 20, 20, 40);
+		
 		x = GamePanel.WIDTH / 2;
 		y = GamePanel.HEIGHT / 2;
 		this.width = width;
 		this.height = height;
 	}
 	
-	public void update(float delta) {
-		
-		System.out.println(delta);
+	public void update(double delta) {
 		
 		if (right) {
 			x += hSpeed * delta;
@@ -51,8 +58,9 @@ public class Player {
 		}
 		
 		if (jumping) {
-			y += currentVSpeed * delta;
 			currentVSpeed += gravity * delta;
+			y += currentVSpeed * delta;
+			
 			//currentJumpSpeed -= 0.1;
 			
 			/*if (currentJumpSpeed <= 0) {

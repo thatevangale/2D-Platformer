@@ -68,11 +68,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             input();
 			
             // Update game and timer UPS if enough time has passed
-            while (acc >= interval) {
-            	update(delta);
-            	timer.updateUPS();
-            	acc -= interval;
-            }
+            update(delta);
+            timer.updateUPS();
 			
             // Calculate alpha value for interpolation
             alpha = acc / interval;

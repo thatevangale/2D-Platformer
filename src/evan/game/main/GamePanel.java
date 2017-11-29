@@ -1,6 +1,7 @@
 package evan.game.main;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -101,11 +102,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		super.paintComponent(g);
 		
 		g.clearRect(0, 0, WIDTH, HEIGHT);
-		g.drawString("FPS: " + timer.getFPS() + " | UPS: " + timer.getUPS(), 20, 20);
 		
 		// Matrix3x3f viewport = 
 		
 		gsm.render(g);
+		
+		g.setFont(new Font("Monospaced", Font.PLAIN, 16));
+		g.drawString("FPS: " + timer.getFPS() + " | UPS: " + timer.getUPS(), 20, 20);
 	}
 
 	@Override

@@ -3,35 +3,31 @@ package evan.game.main;
 public class GameTimer {
 	
     // System time since last loop.
-    private double lastLoopTime;
+    private long nsLastTime;
     
     // Used for FPS and UPS calculation.
     private double timeCount;
 
-    // Frames per second.
+    // Frames per second and counter for FPS calculation.
     private int fps;
-    
-    // Counter for the FPS calculation.
     private int fpsCount;
     
-    // Updates per second.
+    // Updates per second and counter for UPS calculation.
     private int ups;
-    
-    // Counter for the UPS calculation.
     private int upsCount;
 	
 	// Initializes the timer.
     public void init() {
-        lastLoopTime = getTime();
+    	nsLastTime = getTime();
     }
 
     /**
-     * Returns the time elapsed since <code>glfwInit()</code> in seconds.
+     * Returns the time elapsed since window opened in nanoseconds.
      *
-     * @return System time in seconds
+     * @return System time in nanoseconds
      */
-    public double getTime() {
-        return System.nanoTime() / 1.0e9;
+    public long getTime() {
+        return System.nanoTime();
     }
 
     /**
@@ -40,11 +36,15 @@ public class GameTimer {
      * @return Delta time in seconds
      */
     public double getDelta() {
-    	double time = getTime();
-    	double delta = time - lastLoopTime;
-        lastLoopTime = time;
-        timeCount += delta;
-        return delta;
+    	// Calculate delta time
+    	long nsCurrentTime = getTime();
+    	double nsDeltaTime = nsCurrentTime - nsLastTime;
+    	
+    	// Running running values
+    	nsLastTime = nsCurrentTime;
+        timeCount += nsDeltaTime / 1.0e9;
+        
+        return nsDeltaTime / 1.0e9;
     }
     
     /**
@@ -55,17 +55,24 @@ public class GameTimer {
     }
     
     /**
-     * Updates FPS and UPS if a whole second has passed.
+     * Updates the UPS counter.
+     */
+    public void updateUPS() {
+        upsCount++;
+    }
+    
+    /**
+     * Resets FPS and UPS if a whole second has passed.
      */
     public void update() {
-        if (timeCount > 1f) {
+        if (timeCount > 1.0) {
             fps = fpsCount;
             fpsCount = 0;
 
-            //ups = upsCount;
-            //upsCount = 0;
+            ups = upsCount;
+            upsCount = 0;
 
-            timeCount -= 1f;
+            timeCount -= 1.0;
         }
     }
     
@@ -83,7 +90,7 @@ public class GameTimer {
      *
      * @return Updates per second
      */
-	public int updateUPS() {
+	public int getUPS() {
 		return ups > 0 ? ups : upsCount;
 	}
 	

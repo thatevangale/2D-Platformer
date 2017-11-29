@@ -19,8 +19,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	private Thread thread;
 	private volatile boolean isRunning = false;
 	
-	public static final int TARGET_FPS = 75;
-    public static final int TARGET_UPS = 30;
+	public static final int TARGET_FPS = 75; // NOT CURRENTLY WORKING!?
+    public static final int TARGET_UPS = 60;
     
     public static final float WORLD_WIDTH = 2.0f;
     public static final float WORLD_HEIGHT = 2.0f;
@@ -69,7 +69,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			
             // Update game and timer UPS if enough time has passed
             while (acc >= interval) {
-            	update(interval);
+            	update(delta);
             	timer.updateUPS();
             	acc -= interval;
             }
@@ -101,7 +101,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		super.paintComponent(g);
 		
 		g.clearRect(0, 0, WIDTH, HEIGHT);
-		g.drawString("FPS: " + timer.getFPS(), 20, 20);
+		g.drawString("FPS: " + timer.getFPS() + " | UPS: " + timer.getUPS(), 20, 20);
 		
 		// Matrix3x3f viewport = 
 		

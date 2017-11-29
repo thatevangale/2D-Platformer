@@ -17,14 +17,10 @@ public class MenuState extends GameState {
 	}
 
 	@Override
-	public void init() {
-		
-	}
+	public void init() {}
 
 	@Override
-	public void update() {
-		
-	}
+	public void update(double delta) {}
 
 	@Override
 	public void render(Graphics g) {
@@ -75,8 +71,6 @@ public class MenuState extends GameState {
 	}
 
 	@Override
-	public void keyReleased(int k) {
-		
-	}
+	public void keyReleased(int k) {}
 
 }

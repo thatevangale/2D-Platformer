@@ -13,42 +13,64 @@ public class Player {
 	private double x, y;
 	private int width, height;
 	
+	private double hSpeed = 100;
+	private double currentHSpeed = 0;
+	private double maxHSpeed = 6;
+	
+	private double vHeight = 64;
+	private double vTime = 2;
+	private double initVelocity = 200; //2 * vHeight / vTime;
+	private double currentVSpeed = initVelocity;
+	private double maxVSpeed = 8;
+	private double gravity = 200; //2 * vHeight / (vTime * vTime);
+	
 	// Old
-	private double jumpSpeed = 5;
+	/*private double jumpSpeed = 5;
 	private double currentJumpSpeed = jumpSpeed;
 	
 	private double maxFallSpeed = 5;
-	private double currentFallSpeed = 0.1;
+	private double currentFallSpeed = 0.1;*/
 
+	/*public Player(int width, int height) {
+		x = GamePanel.WIDTH / 2;
+		y = GamePanel.HEIGHT / 2;
+		this.width = width;
+		this.height = height;
+	}*/
+	
 	public Player(int width, int height) {
+		//super(x, y, speed, 20, 20, 20, 40);
+		
 		x = GamePanel.WIDTH / 2;
 		y = GamePanel.HEIGHT / 2;
 		this.width = width;
 		this.height = height;
 	}
 	
-	public void update() {
+	public void update(double delta) {
 		
 		if (right) {
-			x += 4;
+			x += hSpeed * delta;
 		}
 		
 		if (left) {
-			x -= 4;
+			x -= hSpeed * delta;
 		}
 		
 		if (jumping) {
-			y -= currentJumpSpeed;
-			currentJumpSpeed -= 0.1;
+			currentVSpeed += gravity * delta;
+			y += currentVSpeed * delta;
 			
-			if (currentJumpSpeed <= 0) {
+			//currentJumpSpeed -= 0.1;
+			
+			/*if (currentJumpSpeed <= 0) {
 				currentJumpSpeed = jumpSpeed;
 				jumping = false;
 				falling = true;
-			}
+			}*/
 		}
 		
-		if (falling) {
+		/*if (falling) {
 			y += currentFallSpeed;
 			
 			if (currentFallSpeed < maxFallSpeed) {
@@ -56,7 +78,7 @@ public class Player {
 			}
 		} else if (!falling) {
 			currentFallSpeed = 0.1;
-		}
+		}*/
 		
 	}
 	
@@ -77,6 +99,7 @@ public class Player {
 		
 		if (k == KeyEvent.VK_UP) {
 			jumping = true;
+			currentVSpeed = -initVelocity;
 		}
 		
 	}

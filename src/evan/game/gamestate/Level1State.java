@@ -18,8 +18,8 @@ public class Level1State extends GameState {
 	}
 
 	@Override
-	public void update() {
-		player.update();
+	public void update(double delta) {
+		player.update(delta);
 	}
 
 	@Override
